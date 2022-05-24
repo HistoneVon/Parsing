@@ -7,5 +7,7 @@ int main() {
     if (!inputGrammarIsOpen) {
         return -1;
     }
+    parser.pretreatment();
+    parser.closeInputGrammar();
     return 0;
 }

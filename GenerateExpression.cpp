@@ -5,3 +5,13 @@
  */
 
 #include "GenerateExpression.h"
+
+GenerateExpression::GenerateExpression(Symbol &l) : left(l) {}
+
+void GenerateExpression::setLeft(const Symbol &leftTemp) {
+    GenerateExpression::left = leftTemp;
+}
+
+const Symbol &GenerateExpression::getLeft() const {
+    return left;
+}

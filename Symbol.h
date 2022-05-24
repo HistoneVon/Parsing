@@ -14,11 +14,19 @@ private:
     std::string name;   //符号名
     int type;           //0 终结符 1 非终结符
 public:
-    Symbol(const std::string& n, int t);
+    Symbol(const std::string &n, int t);
 
     bool operator==(Symbol &A);
 
     bool operator!=(Symbol &A);
+
+    void setName(const std::string &nameTemp);
+
+    void setType(int typeTemp);
+
+    const std::string &getName() const;
+
+    int getType() const;
 };
 
 #endif //PARSING_SYMBOL_H
