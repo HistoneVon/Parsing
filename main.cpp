@@ -8,6 +8,7 @@ int main() {
         return -1;
     }
     parser.pretreatment();
+    parser.printGrammar();
     parser.closeInputGrammar();
     return 0;
 }

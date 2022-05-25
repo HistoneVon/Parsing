@@ -6,9 +6,12 @@
 
 #include "Parser.h"
 
-//Parser::Parser() {
-//
-//}
+Parser::Parser() {
+    //为指针申请空间
+    Symbol symTemp(" ", 0);
+    expStart = new GenerateExpression(symTemp);
+    symbolStart = new Symbol(" ", 0);
+}
 
 Parser::~Parser() {
     if (inputGrammar.is_open()) {
@@ -21,16 +24,16 @@ void Parser::pretreatment() {
     //创建增广文法开始符，用EE表示
     Symbol expStartLeft("EE", 1);
     //存入左部
-    expStart.setLeft(expStartLeft);
+    expStart->setLeft(expStartLeft);
     //创建右部
-    symbolStart.setName("P");
-    symbolStart.setType(1);
+    symbolStart->setName("P");
+    symbolStart->setType(1);
     //右部第一个产生式
-    rightStart.push_back(symbolStart);
+    rightStart.push_back(*symbolStart);
     //存入右部
-    expStart.rights.push_back(rightStart);
+    expStart->rights.push_back(rightStart);
     //增广文法产生式存入
-    exps.push_back(expStart);
+    exps.push_back(*expStart);
 
     /*循环读入语法文件每一行*/
     while (getline(inputGrammar, lineString)) {
@@ -99,5 +102,21 @@ void Parser::closeInputGrammar() {
     if (inputGrammar.is_open()) {
         inputGrammar.close();
         std::cout << "Close Grammar Successfully!" << std::endl;
+    }
+}
+
+void Parser::printGrammar() {
+    std::cout << "[Grammar Read-in]" << std::endl;
+    for (auto &exp: exps) {
+        std::cout << exp.getLeft().getName() << " -> ";
+        for (int j = 0; j < exp.rights.size(); ++j) {
+            for (auto &k: exp.rights[j]) {
+                std::cout << k.getName() << " ";
+            }
+            if (j != exp.rights.size() - 1) {
+                std::cout << "| ";
+            }
+        }
+        std::cout << std::endl;
     }
 }

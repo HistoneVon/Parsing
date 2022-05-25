@@ -20,11 +20,11 @@ private:
     std::string lineString;                 //读出的一行语法
     std::vector<GenerateExpression> exps;   //所有产生式
     //增广文法
-    GenerateExpression expStart;            //增广文法开始符
+    GenerateExpression *expStart;            //增广文法开始符
     std::vector<Symbol> rightStart;         //增广文法首产生式右部第一个式子（实际上只有一个式子）
-    Symbol symbolStart;                     //原文法首符号
+    Symbol *symbolStart;                     //原文法首符号
 public:
-//    Parser();
+    Parser();
 
     ~Parser();
 
@@ -35,6 +35,8 @@ public:
 
     /* 1.文法预处理（读文件 增广文法） */
     void pretreatment();
+
+    void printGrammar();//输出检查
 };
 
 #endif //PARSING_PARSER_H
