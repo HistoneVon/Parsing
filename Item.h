@@ -9,8 +9,8 @@
 
 class Item {//项
 public:
-    int wrapperIdx; // 点对应exps 第一层的下标
-    int expIdx;     // 点对应exps 第二层的下标
+    int wrapperIdx; // 点对应exps第一层的下标（哪个非终结符）
+    int expIdx;     // 点对应exps第二层的下标（哪个右部）
     int pos;        // 点在产生式中的位置 (0 位最左边)
 
     Item(int w, int e, int p);

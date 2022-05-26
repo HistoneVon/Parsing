@@ -30,3 +30,8 @@ bool Items::operator==(Items &A) {
     }
     return true;
 }
+
+
+void Items::setId(int idTemp) {
+    Items::id = idTemp;
+}

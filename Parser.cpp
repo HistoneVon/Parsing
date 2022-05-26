@@ -7,7 +7,7 @@
 #include "Parser.h"
 
 Parser::Parser() {
-    //为指针申请空间
+    //为指针申请空间（笨办法，临时变量）
     Symbol symTemp(" ", 0);
     expStart = new GenerateExpression(symTemp);
     symbolStart = new Symbol(" ", 0);
@@ -119,4 +119,15 @@ void Parser::printGrammar() {
         }
         std::cout << std::endl;
     }
+}
+
+void Parser::generateGOTO() {
+    //最开始的一项
+    Items items0;
+    Item itemStart(0, 0, 0);
+    items0.kernelItems.push_back(itemStart);
+    closure(exps, items0);//获取第一项集的非内核项
+    items0.setId(0);//第一项集编号为0
+    QItems.push(items0);//
+    allItems.push_back(items0);
 }
