@@ -120,6 +120,7 @@ Items goTo(std::vector<GenerateExpression> &exps, Items &items, const std::strin
 
 void getFirst(std::vector<GenerateExpression> &exps,
               std::unordered_map<Symbol, std::vector<Symbol>, customHashFunc, customCmpFunc> &first) {
+    auto *emptySym = new Symbol("@", 0);//空字符串 后边有用
     //终结符first初始化
     for (auto &exp: exps) {
         for (auto &right: exp.rights) {

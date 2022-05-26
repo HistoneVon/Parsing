@@ -33,6 +33,4 @@ public:
     int getType() const;
 };
 
-Symbol *emptySym = new Symbol("@", 0);//空字符串 后边有用
-
 #endif //PARSING_SYMBOL_H
