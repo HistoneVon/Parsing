@@ -11,6 +11,8 @@ int main() {
     //文法预处理
     parser.pretreatment();
     parser.printGrammar();//检查预处理结果
+    //生成GOTO图
+    parser.generateGOTO();
     //关文件
     parser.closeInputGrammar();
     return 0;

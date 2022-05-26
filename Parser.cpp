@@ -130,17 +130,36 @@ void Parser::generateGOTO() {
     items0.setId(0);//第一项集编号为0
     QItems.push(items0);//加入队列，以便循环分析
     allItems.push_back(items0);//加入项集族
-    int count = 1;
+    int count = 1;//项集数 也是allItems的下标，初始化为1（也是下一项集的下标），0下标是初始项集
     while (!QItems.empty()) {
         Items items = QItems.front();
         QItems.pop();
         std::vector<std::string> names;//所有的符号名字
         getAllNames(exps, items, names);//获取第一项 所有点的下一项符号名字
-        for (int i = 0; i < names.size(); ++i) {
-            if (names[i]=="@"){
+        for (auto &name: names) {
+            if (name == "@") {//如果下一项是空，则直接不管，进入下一字符的判断
                 continue;
             }
-//            Items items1=
+            Items items1 = goTo(exps, items, name);//求出当前项集接收name[i]后的下一项集
+            bool flag = false;//项集族中是否有下一项集的标记
+            for (auto &allItem: allItems) {
+                if (allItem == items1) {//（已重载）如果下一项集和已有的某个项集内核项相同
+                    flag = true;
+                    Symbol nameTemp(name, int(isupper(name[0])));//创建接受的符号，如果是大写则为非终结符
+                    //allItems[items.id].directions.push_back(Direction(allItems[j].id, nameTemp));
+                    allItems[items.id].directions.emplace_back(allItem.id, nameTemp);//创建路径至已有的项集
+                    break;
+                }
+            }
+            if (!flag) {//如果项集不在已有项集族中
+                closure(exps, items1);//求该项集内核项闭包（求非内核项并存入）
+                items1.id = count++;//项集数 也是allItems的下标，赋值后+1
+                QItems.push(items1);//将新项集加入队列以供后续判断
+                Symbol nameTemp(name, int(isupper(name[0])));
+                //allItems[items.id].directions.push_back(Direction(items1.id,nameTemp));
+                allItems[items.id].directions.emplace_back(items1.id, nameTemp);//当前项集的出度+1，指向新的项集
+                allItems.push_back(items1);//将该项集加入项集族
+            }
         }
     }
 }
