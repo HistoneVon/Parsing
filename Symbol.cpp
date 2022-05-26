@@ -6,17 +6,17 @@
 
 #include "Symbol.h"
 
+//bool Symbol::operator==(Symbol &A) {
+//    return this->name == A.name;
+//}
+//
+//bool Symbol::operator!=(Symbol &A) {
+//    return this->name != A.name;
+//}
+
 Symbol::Symbol(const std::string &n, int t) {
     name = n;
     type = t;
-}
-
-bool Symbol::operator==(Symbol &A) {
-    return this->name == A.name;
-}
-
-bool Symbol::operator!=(Symbol &A) {
-    return this->name != A.name;
 }
 
 void Symbol::setName(const std::string &nameTemp) {
@@ -35,4 +35,11 @@ int Symbol::getType() const {
     return type;
 }
 
+bool operator==(Symbol &A, Symbol &B) {
+    return A.name == B.name;
+}
+
+bool operator!=(Symbol &A, Symbol &B) {
+    return A.name != B.name;
+}
 

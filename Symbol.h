@@ -16,9 +16,13 @@ private:
 public:
     Symbol(const std::string &n, int t);
 
-    bool operator==(Symbol &A);
+    friend bool operator==(Symbol &A, Symbol &B);
 
-    bool operator!=(Symbol &A);
+    friend bool operator!=(Symbol &A, Symbol &B);
+
+//    bool operator==(Symbol &A);
+
+//    bool operator!=(Symbol &A);
 
     void setName(const std::string &nameTemp);
 
@@ -28,5 +32,7 @@ public:
 
     int getType() const;
 };
+
+Symbol *emptySym = new Symbol("@", 0);//空字符串 后边有用
 
 #endif //PARSING_SYMBOL_H

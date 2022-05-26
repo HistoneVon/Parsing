@@ -117,3 +117,95 @@ Items goTo(std::vector<GenerateExpression> &exps, Items &items, const std::strin
     }
     return res;
 }
+
+void getFirst(std::vector<GenerateExpression> &exps,
+              std::unordered_map<Symbol, std::vector<Symbol>, customHashFunc, customCmpFunc> &first) {
+    //终结符first初始化
+    for (auto &exp: exps) {
+        for (auto &right: exp.rights) {
+            for (auto symTemp: right) {
+                // std::vector<Symbol>::iterator e = std::find(first[symTemp].begin(),
+                //                                               first[symTemp].end(),
+                //                                               symTemp);
+                // 不知find为何不行，替换为下边的语句
+                std::vector<Symbol>::iterator e;
+                for (e = first[symTemp].begin(); e < first[symTemp].end(); ++e) {
+                    if (*e == symTemp) {//遍历symTemp的first集，如果找到与symTemp相同的符号（即是本身的）
+                        break;//则退出（此时有终结符和非终结符两种）
+                    }
+                }
+                if (symTemp.getType() == 0 &&//终结符
+                    first[symTemp].end() == e) {//且目前不在symTemp的first集合中
+                    first[symTemp].push_back(symTemp);//加入first
+                }
+            }
+        }
+    }
+    //遍历产生式
+    while (true) {
+        bool flag = true;//产生标记
+        for (auto &exp: exps) {
+            Symbol symLeft = exp.getLeft();
+            for (auto &right: exp.rights) {
+                bool emptyFlag = true;
+                for (auto symRight: right) {
+                    std::vector<Symbol>::iterator e;
+                    for (e = first[symLeft].begin(); e < first[symLeft].end(); ++e) {
+                        if (*e == symRight) {
+                            break;
+                        }
+                    }
+                    //同样find不能用，用笨办法
+                    if (symRight.getType() == 0 &&
+                        e == first[symLeft].end() &&
+                        *emptySym != symRight) {
+                        //终结符
+                        first[symLeft].push_back(symRight);
+                        flag = false;
+                        emptyFlag = false;
+                        break;
+                    } else if (*emptySym != symRight) {
+                        for (int l = 0; l < first[symRight].size(); ++l) {
+                            std::vector<Symbol>::iterator f;
+                            for (f = first[symLeft].begin(); f < first[symLeft].end(); ++f) {
+                                if (*f == first[symRight][l]) {
+                                    break;
+                                }
+                            }
+                            if (f == first[symLeft].end() &&
+                                *emptySym != first[symRight][l] &&
+                                *emptySym != first[symRight][l]) {
+                                first[symLeft].push_back(first[symRight][l]);
+                                flag = false;
+                            }
+                        }
+                        std::vector<Symbol>::iterator g;
+                        for (g = first[symRight].begin(); g < first[symRight].end(); ++g) {
+                            if (*g == *emptySym) {
+                                break;
+                            }
+                        }
+                        if (g == first[symRight].end()) {
+                            emptyFlag = false;
+                            break;
+                        }
+                    }
+                }
+                std::vector<Symbol>::iterator h;
+                for (h = first[symLeft].begin(); h < first[symLeft].end(); ++h) {
+                    if (*h == *emptySym) {
+                        break;
+                    }
+                }
+                if (emptyFlag &&
+                    h == first[symLeft].end()) {
+                    first[symLeft].push_back(*emptySym);
+                    flag = false;
+                }
+            }
+        }
+        if (flag) {
+            break;// 没有一轮新加入的就算法结束
+        }
+    }
+}

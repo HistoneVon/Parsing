@@ -18,7 +18,7 @@ public:
     std::vector<Item> nonKernelItems;   //非内核项
     std::vector<Direction> directions;  //项集出方向项集下标
 public:
-    bool operator==(Items &A);
+    friend bool operator==(Items &A, Items &B);
 
     void setId(int idTemp);
 };

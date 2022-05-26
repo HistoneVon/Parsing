@@ -37,14 +37,14 @@ void Parser::pretreatment() {
 
     /*循环读入语法文件每一行*/
     while (getline(inputGrammar, lineString)) {
-        bool first = true;//第一个字符为左部 标记
+        bool firstFlag = true;//第一个字符为左部 标记
         int p1 = 0, p2 = 0;//设置双指针找到子串
         int leftIdx = -1;//产生式下标
         std::vector<Symbol> expRight;//产生式右部
         for (int i = 0; i < lineString.size(); ++i) {//遍历每一个字符
             if (lineString[i] == ' ') {//找到一个空格（即存在分割）
                 p2 = i;
-                if (first) {//如果式子是左部的处理方法
+                if (firstFlag) {//如果式子是左部的处理方法
                     std::string leftExp = lineString.substr(p1, p2 - p1);//左部子串
                     if (!isupper(leftExp[0])) {//非大写
                         std::cout << "[Error]:Left is not Upper Symbol!" << std::endl;
@@ -63,7 +63,7 @@ void Parser::pretreatment() {
                         GenerateExpression expTemp(leftTemp);
                         exps.push_back(expTemp);//新增一个产生式实例
                     }
-                    first = false;//如果找到了左部，那么本行剩余的都不是左部
+                    firstFlag = false;//如果找到了左部，那么本行剩余的都不是左部
                 } else {//如果是右部
                     std::string rightTemp = lineString.substr(p1, p2 - p1);//右部的一个
                     Symbol symbolTemp_1(rightTemp, int(isupper(rightTemp[0])));//生成一个右部符号
@@ -162,4 +162,8 @@ void Parser::generateGOTO() {
             }
         }
     }
+}
+
+void Parser::generateFIRSTAndFOLLOW() {
+    follow[expStart->getLeft()].push_back(*endSym);//开始符号follow集为"$"
 }

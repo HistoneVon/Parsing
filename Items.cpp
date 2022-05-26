@@ -7,19 +7,19 @@
 #include "Items.h"
 #include <deque>
 
-bool Items::operator==(Items &A) {
+bool operator==(Items &A, Items &B) {
     //项集内核项相同即为同一项集
-    if (this->kernelItems.size() != A.kernelItems.size()) {
+    if (A.kernelItems.size() != B.kernelItems.size()) {
         return false;
     }
-    const int n = int(this->kernelItems.size());
+    const int n = int(A.kernelItems.size());
     std::deque<bool> visited(n, false);
     for (int i = 0; i < n; ++i) {
         bool flag = false;
         for (int j = 0; j < n; ++j) {
-            if (!visited[j] && this->kernelItems[i].wrapperIdx == A.kernelItems[j].wrapperIdx
-                && this->kernelItems[i].expIdx == A.kernelItems[j].expIdx
-                && this->kernelItems[i].pos == A.kernelItems[j].pos) {
+            if (!visited[j] && A.kernelItems[i].wrapperIdx == B.kernelItems[j].wrapperIdx
+                && A.kernelItems[i].expIdx == B.kernelItems[j].expIdx
+                && A.kernelItems[i].pos == B.kernelItems[j].pos) {
                 visited[i] = true;
                 flag = true;
             }
