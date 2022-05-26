@@ -128,6 +128,13 @@ void Parser::generateGOTO() {
     items0.kernelItems.push_back(itemStart);
     closure(exps, items0);//获取第一项集的非内核项
     items0.setId(0);//第一项集编号为0
-    QItems.push(items0);//
-    allItems.push_back(items0);
+    QItems.push(items0);//加入队列，以便循环分析
+    allItems.push_back(items0);//加入项集族
+    int count = 1;
+    while (!QItems.empty()){
+        Items items=QItems.front();
+        QItems.pop();
+        std::vector<std::string> names;//所有的符号名字
+
+    }
 }

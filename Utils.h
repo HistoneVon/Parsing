@@ -17,9 +17,16 @@
 
 /*
  * @proc 求出items所有非内核项，并且填入项集items
- * @param exps:所有生成式 items:内核项已经填好的项集
+ * @params exps:所有生成式 items:内核项已经填好的项集
  * @return void
 */
 void closure(std::vector<GenerateExpression> &exps, Items &items);
+
+/*
+ * @proc 求出项集所有下一项（点的下一个符号）名称，放到names里面
+ * @params exps:所有生成式 items:所求项集 names:为符号名称
+ * @return void
+*/
+void getAllNames(std::vector<GenerateExpression> &exps, Items &items, std::vector<std::string> &names);
 
 #endif //PARSING_UTILS_H

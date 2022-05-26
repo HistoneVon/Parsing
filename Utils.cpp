@@ -50,3 +50,45 @@ void closure(std::vector<GenerateExpression> &exps, Items &items) {
         }
     }
 }
+
+void getAllNames(std::vector<GenerateExpression> &exps, Items &items, std::vector<std::string> &names) {
+    //内核项
+    for (auto &kernelItem: items.kernelItems) {
+        int wrapperIdx = kernelItem.wrapperIdx;
+        int expIdx = kernelItem.expIdx;
+        int pos = kernelItem.pos;
+        if (exps[wrapperIdx].rights[expIdx].size() == pos) {//点移动到了最后
+            continue;
+        }
+        bool flag = false;//标记是否已在names中记录
+        for (auto &name: names) {
+            if (name == exps[wrapperIdx].rights[expIdx][pos].getName()) {
+                //pos指的是点的位置，将该位置作为下标，所对应的符号总是点后的符号
+                flag = true;//已记录
+                break;
+            }
+        }
+        if (!flag) {//没记录就向names中存入
+            names.push_back(exps[wrapperIdx].rights[expIdx][pos].getName());
+        }
+    }
+    //非内核项
+    for (auto &nonKernelItem: items.nonKernelItems) {
+        int wrapperIdx = nonKernelItem.wrapperIdx;
+        int expIdx = nonKernelItem.expIdx;
+        int pos = nonKernelItem.pos;
+        if (exps[wrapperIdx].rights[expIdx].size() == pos) {//点移动到了最后
+            continue;
+        }
+        bool flag = false;
+        for (auto &name: names) {
+            if (name == exps[wrapperIdx].rights[expIdx][pos].getName()) {
+                flag = true;
+                break;
+            }
+        }
+        if (!flag) {
+            names.push_back(exps[wrapperIdx].rights[expIdx][pos].getName());
+        }
+    }
+}
