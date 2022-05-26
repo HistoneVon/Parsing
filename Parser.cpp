@@ -131,10 +131,16 @@ void Parser::generateGOTO() {
     QItems.push(items0);//加入队列，以便循环分析
     allItems.push_back(items0);//加入项集族
     int count = 1;
-    while (!QItems.empty()){
-        Items items=QItems.front();
+    while (!QItems.empty()) {
+        Items items = QItems.front();
         QItems.pop();
         std::vector<std::string> names;//所有的符号名字
-
+        getAllNames(exps, items, names);//获取第一项 所有点的下一项符号名字
+        for (int i = 0; i < names.size(); ++i) {
+            if (names[i]=="@"){
+                continue;
+            }
+//            Items items1=
+        }
     }
 }

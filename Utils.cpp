@@ -92,3 +92,28 @@ void getAllNames(std::vector<GenerateExpression> &exps, Items &items, std::vecto
         }
     }
 }
+
+Items goTo(std::vector<GenerateExpression> &exps, Items &items, const std::string &name) {
+    Items res;
+    for (auto &kernelItem: items.kernelItems) {
+        int wrapperIdx = kernelItem.wrapperIdx;
+        int expIdx = kernelItem.expIdx;
+        int pos = kernelItem.pos;
+        if (exps[wrapperIdx].rights[expIdx].size() == pos) {// 点移动到了最后
+            continue;
+        }
+        if (exps[wrapperIdx].rights[expIdx][pos].getName() == name) {
+            //res.kernelItems.push_back(Item(wrapperIdx,expIdx,pos+1));
+            res.kernelItems.emplace_back(wrapperIdx, expIdx, pos + 1);// 向右移动了一个单位
+        }
+    }
+    for (auto &nonKernelItem: items.nonKernelItems) {
+        int wrapperIdx = nonKernelItem.wrapperIdx;
+        int expIdx = nonKernelItem.expIdx;
+        int pos = nonKernelItem.pos;
+        if (exps[wrapperIdx].rights[expIdx][pos].getName() == name) {
+            res.kernelItems.emplace_back(wrapperIdx, expIdx, pos + 1);// 向右移动了一个单位
+        }
+    }
+    return res;
+}

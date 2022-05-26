@@ -29,4 +29,11 @@ void closure(std::vector<GenerateExpression> &exps, Items &items);
 */
 void getAllNames(std::vector<GenerateExpression> &exps, Items &items, std::vector<std::string> &names);
 
+/*
+ * @proc 求出项集items接收到name符号进入的下一个项集
+ * @params exps:所有生成式 items:源项集 name:接收到的符号名称
+ * @return 下一个项集，已经包含所有内核项
+*/
+Items goTo(std::vector<GenerateExpression> &exps, Items &items, const std::string& name);
+
 #endif //PARSING_UTILS_H
